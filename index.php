@@ -1,15 +1,19 @@
 <?php
-function dump_mysql($dbname,$username,$password,$hostname,$exportpath)
+function trace_router($host,$unix)
 {
-$command='/opt/lampp/bin/mysqldump -h ' .$hostname .' -u ' .$username .' ' .$dbname .' > ' .$exportpath;
-echo $command;
-exec($command);
+$host= preg_replace ("/[^A-Za-z0-9.]/","",$host);
+echo '<pre>';
+//check target IP or domain
+if ($unix)
+{
+system ("traceroute $host");
+system("killall -q traceroute");// kill all traceroute processes in case there are some stalled ones or use echo 'traceroute' to execute without shell
 }
-//Fill the below information
-$db ='task3db';//your dbname
-$user ='root';//your username
-$pass ='';//your password
-$host ='localhost';//your hostname
-$path ="/opt/lampp/htdocs/mysqldump/mydb.sql";//your export path
-echo dump_mysql($db,$user,$pass,$host,$path);
+else
+{
+system("tracert $host");
+}
+echo '</pre>';
+}
+trace_router("hscripts.com",1);
 ?>
